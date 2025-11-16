@@ -1,0 +1,24 @@
+name: SAST Security Scan
+
+on:
+  push:
+    branches: [ "main" ] # 當推送到 main 時觸發
+  pull_request:
+    branches: [ "main" ] # 當有 PR 指向 main 時觸發
+
+jobs:
+  semgrep:
+    name: Semgrep SAST Scan
+    runs-on: ubuntu-latest
+    steps:
+      # 1. 把你的程式碼抓下來
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      # 2. 執行 Semgrep SAST 掃描
+      - name: Run Semgrep
+        uses: semgrep/semgrep-action@v1
+        with:
+          # 預設會自動偵測語言並使用推薦的規則
+          # （你也可以指定規則，例如 'p/flask'）
+          config: "auto"
